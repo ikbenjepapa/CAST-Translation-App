@@ -6,6 +6,8 @@ from MCprompts import CATEGORY_PROMPTS
 from rules import apply_description_rules, apply_content_rules
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
+from flask import send_from_directory
+
 # Load environment variables
 load_dotenv()
 
@@ -50,6 +52,14 @@ def apply_glossary_to_text(text, mc):
 
 # Initialize Flask app
 app = Flask(__name__)
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
 
 @app.route('/')
 def home():
