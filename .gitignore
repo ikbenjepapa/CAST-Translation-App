@@ -1,0 +1,6 @@
+__pycache__/
+.env
+glossary.py
+*.pyc
+*.log
+README.txt

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CAST - Start Translating. A fast, intuitive translation tool.">
+    <meta name="keywords" content="CAST, translation, accurate, contextual, swift, language">
+    <title>CAST - Start Translating</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9); /* Light green gradient */
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        html, body {
+            scroll-behavior: smooth;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 700px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Decorative Background */
+        .decorative {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .decorative .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        .decorative .circle1 {
+            top: 10%;
+            left: 5%;
+        }
+
+        .decorative .circle2 {
+            bottom: 10%;
+            right: 5%;
+            background: linear-gradient(135deg, #81C784, #A5D6A7);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .decorative .wave {
+            position: absolute;
+            width: 300px;
+            height: 150px;
+            background: linear-gradient(135deg, #66BB6A, #81C784);
+            opacity: 0.2;
+            border-radius: 50%;
+        }
+
+        .decorative .wave1 {
+            top: 30%;
+            left: -10%;
+        }
+
+        .decorative .wave2 {
+            bottom: 20%;
+            right: -15%;
+            transform: rotate(-30deg);
+        }
+
+        /* Container Styling */
+        .container {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #4CAF50; /* Green to match theme */
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #388E3C; /* Slightly darker green */
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        fieldset {
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        legend {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4CAF50; /* Consistent green */
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50; /* Green button */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #388E3C; /* Darker green on hover */
+            transform: translateY(-3px);
+        }
+
+        .btn-back {
+            margin-top: 15px;
+            padding: 12px;
+            background: #ddd;
+            border: none;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: #bbb;
+        }
+
+        /* Output Box */
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f9f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .output strong {
+            color: #4CAF50; /* Green text */
+        }
+
+        .copy-btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background-color: #388E3C;
+        }
+    </style>
+</head>
+<body>
+    <div class="decorative">
+        <div class="circle circle1"></div>
+        <div class="circle circle2"></div>
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <h1>CAST</h1>
+            <p>Translate your text quickly and accurately.</p>
+            <form id="translate-form" method="POST" action="/translate">
+                <label for="source-text">Enter Text to Translate:</label>
+                <textarea id="source-text" name="text" placeholder="Type your text here..."></textarea>
+
+                <label for="source-language">Source Language:</label>
+                <select id="source-language" name="source_language">
+                    <option value="auto">Detect Language</option>
+                    <option value="en">English</option>
+                    <option value="th">Thai</option>
+                </select>
+
+                <label for="target-language">Target Language:</label>
+                <select id="target-language" name="target_language">
+                    <option value="en">English</option>
+                    <option value="th">Thai</option>
+                </select>
+
+                <label for="mc">Category:</label>
+                <select id="mc" name="mc" required>
+                    <option value="">Select Category</option>
+                    <option value="GD">GD</option>
+                    <option value="PB">PB</option>
+                    <option value="ET">ET</option>
+                    <option value="BD">BD</option>
+                </select>
+
+                <fieldset>
+                    <legend>Translation Type:</legend>
+                    <label><input type="radio" name="translation_type" value="description" required> DESCRIPTION</label>
+                    <label><input type="radio" name="translation_type" value="content" required> CONTENT</label>
+                </fieldset>
+
+                <button type="submit">Translate</button>
+            </form>
+
+            <div id="output" class="output" style="display: none;">
+                <div class="output-header">
+                    <strong>Translation Result:</strong>
+                    <button id="copy-btn" class="copy-btn">Copy</button>
+                </div>
+                <p id="translated-text"></p>
+            </div>
+
+            <a href="/" class="btn-back">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('translate-form');
+        const outputDiv = document.getElementById('output');
+        const translatedText = document.getElementById('translated-text');
+        const copyBtn = document.getElementById('copy-btn');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const text = document.getElementById('source-text').value.trim();
+            if (!text) {
+                alert('Please enter text to translate.');
+                return;
+            }
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.translation) {
+                    translatedText.textContent = result.translation;
+                    outputDiv.style.display = 'block';
+                    outputDiv.scrollIntoView({ behavior: "smooth" });
+                } else {
+                    translatedText.textContent = 'Error: Unable to translate.';
+                    outputDiv.style.display = 'block';
+                }
+            } catch (error) {
+                translatedText.textContent = 'Error: Something went wrong.';
+                outputDiv.style.display = 'block';
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const textToCopy = translatedText.textContent;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert('Copied to clipboard!');
+                }).catch(() => {
+                    alert('Failed to copy.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CAST - Contextual Accurate Swift Translation. A fast and accurate translation tool for bridging language barriers.">
+    <meta name="keywords" content="CAST, translation, accurate, contextual, swift, language">
+    <title>CAST - Contextual Accurate Swift Translation</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Section Styles */
+        section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: start;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        /* Landing Page Section */
+        .landing {
+            background: linear-gradient(135deg, #4CAF50, #2196f3);
+            color: white;
+            text-align: center;
+        }
+
+        .landing h1 {
+            font-size: 80px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .landing p {
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 20px;
+            font-size: 18px;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Introduction Section */
+        .intro {
+            background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Subtle green to blue gradient */
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .intro h2 {
+            font-size: 36px;
+            color: #2196f3; /* Blue for better consistency */
+            margin-bottom: 30px;
+            text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        /* Card Grid Style */
+        .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .feature-item {
+            width: 300px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-header {
+            background: #2196f3; /* Blue background for headers */
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .feature-icon {
+            font-size: 50px;
+            margin: 20px 0;
+            color: #2196f3;
+        }
+
+        .feature-text {
+            padding: 20px;
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Key Principles Section */
+        .key-principles {
+            background: linear-gradient(135deg, #ffffff, #f1f8e9);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .key-principles h2 {
+            font-size: 36px;
+            color: #2196f3; /* Consistent blue color */
+            margin-bottom: 30px;
+        }
+
+        .principle-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .principle-item {
+            width: 300px;
+            background: #f0f9f6;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .principle-icon {
+            font-size: 50px;
+            color: #2196f3;
+            margin-bottom: 15px;
+        }
+
+        .principle-title {
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .principle-text {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Call-to-Action Section */
+        .cta {
+            background: linear-gradient(135deg, #2196f3, #4CAF50);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            background: white;
+            color: #2196f3; /* Blue button */
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .cta .btn:hover {
+            background: #2196f3; /* Hover color change */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Section -->
+    <section class="landing">
+        <h1>CAST</h1>
+        <p>Contextual Accurate Swift Translation</p>
+        <div class="scroll-down">Scroll down ⬇</div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="intro">
+        <h2>What is CAST?</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <div class="feature-header">Introduction</div>
+                <div class="feature-icon">🤖</div>
+                <div class="feature-text">
+                    <span class="highlight">CAST</span> stands for <strong>Contextual Accurate Swift Translation</strong>. 
+                    It's a powerful tool designed to bridge language barriers with precision, speed, and comprehension. 
+                    <span class="highlight">CAST</span> combines the advanced capabilities of <strong>artificial intelligence</strong> with the thoughtfulness of <strong>human expertise</strong> 
+                    to deliver translations that are not only accurate but also contextually meaningful.
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-header">Glossary</div>
+                <div class="feature-icon">📚</div>
+                <div class="feature-text">
+                    What makes <span class="highlight">CAST</span> unique is its integration of a <strong>human-curated glossary</strong>, 
+                    carefully built and stored in its database and fine-tuning prompts. The glossary ensures that specialized terms and culturally relevant expressions 
+                    are translated precisely, maintaining their intended meaning and tone. Whether you're translating everyday language or industry-specific terms, 
+                    <span class="highlight">CAST</span> provides seamless translations that meets to your expectations.
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-header">Core Principles</div>
+                <div class="feature-icon">✨</div>
+                <div class="feature-text">
+                    Built on three core principles—<strong>Contextual</strong>, <strong>Accurate</strong>, and <strong>Swift</strong>—<span class="highlight">CAST</span> 
+                    is designed to serve as your go-to solution for all translation challenges, blending the power of cutting-edge technology with human insights for unparalleled results.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Principles Section -->
+    <section class="key-principles">
+        <h2>Key Principles</h2>
+        <div class="principle-grid">
+            <div class="principle-item">
+                <div class="principle-icon">🌐</div>
+                <div class="principle-title">Contextual</div>
+                <p class="principle-text">Ensures every translation considers the cultural and situational meaning behind words and phrases.</p>
+            </div>
+            <div class="principle-item">
+                <div class="principle-icon">🎯</div>
+                <div class="principle-title">Accurate</div>
+                <p class="principle-text">Delivers precise translations that maintain the true essence of the original content.</p>
+            </div>
+            <div class="principle-item">
+                <div class="principle-icon">⚡</div>
+                <div class="principle-title">Swift</div>
+                <p class="principle-text">Provides fast, seamless translations to keep up with your pace.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call-to-Action Section -->
+    <section class="cta">
+        <h2>Ready to Translate?</h2>
+        <a href="/translate_page" class="btn">Start Translating</a>
+    </section>
+</body>
+</html>

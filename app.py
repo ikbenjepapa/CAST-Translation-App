@@ -1,0 +1,138 @@
+import openai
+import os
+import sqlite3
+
+from MCprompts import CATEGORY_PROMPTS
+from rules import apply_description_rules, apply_content_rules
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, jsonify
+# Load environment variables
+load_dotenv()
+
+# OpenAI API key
+OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
+if not OPEN_AI_KEY:
+    raise ValueError("OPEN_AI_KEY is not set. Check your .env file.")
+
+# Set OpenAI API key
+openai.api_key = OPEN_AI_KEY
+
+# Global tone directive
+GLOBAL_PROMPT = (
+    "Translation should have a professional tone (business)."
+    "Avoid using generic pronouns like 'it' "
+    "when referring to objects, use descriptive terms such as 'the product,' 'the item,' or other contextually appropriate terms."
+    "Avoid overusing 'is' and use more descriptive action verbs such as 'features,' 'comes with,' "
+    "'includes,' or other suitable verbs based on the context."
+    "Do not use colons (:) to introduce components or lists."
+)
+
+def fetch_glossary_by_category(mc):
+    """
+    Fetch glossary terms for a given category from the database.
+    Prioritize longer terms to prevent partial replacements.
+    """
+    connection = sqlite3.connect("glossary.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT th, eng FROM glossary WHERE mc = ? ORDER BY LENGTH(th) DESC", (mc,))
+    glossary_terms = cursor.fetchall()
+    connection.close()
+    return glossary_terms
+
+def apply_glossary_to_text(text, mc):
+    """
+    Replace Thai glossary terms with their English equivalents in the given text.
+    """
+    glossary_terms = fetch_glossary_by_category(mc)
+    for th, eng in glossary_terms:
+        text = text.replace(th, eng)
+    return text
+
+# Initialize Flask app
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    """Render the Home Page."""
+    return render_template("index.html")
+
+@app.route('/translate_page')
+def translate_page():
+    """Render the Translation Page."""
+    return render_template("translate.html")
+
+@app.route('/translate', methods=['POST'])
+def translate_text():
+    """Handle translation requests with glossary integration."""
+    text_to_translate = request.form.get('text')
+    source_language = request.form.get('source_language')
+    target_language = request.form.get('target_language')
+    translation_type = request.form.get('translation_type')
+    mc = request.form.get('mc')  # Get category (e.g., GD for gardening)
+
+    # Validate form data
+    if not text_to_translate or not source_language or not target_language:
+        return jsonify({'translation': 'Please provide valid input.'})
+
+    if source_language not in ['auto', 'en', 'th'] or target_language not in ['en', 'th']:
+        return jsonify({'translation': 'Invalid source or target language.'})
+
+    if not mc:
+        return jsonify({'translation': 'Please select a category.'})
+
+    try:
+        # Pre-process input text using the glossary
+        preprocessed_text = apply_glossary_to_text(text_to_translate, mc)
+
+        # Fetch the category-specific prompt
+        category_prompt = CATEGORY_PROMPTS.get(
+            mc,
+            "You are a translator that translate text accurately without answering "
+            "or providing additional commentary. Always use the specified source and target languages."
+        )
+
+        # Combine global tone with category-specific prompt
+        combined_prompt = f"{GLOBAL_PROMPT}\n\n{category_prompt}"
+
+        # Prepare OpenAI Chat prompt
+        messages = [
+            {
+                "role": "system",
+                "content": combined_prompt
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Translate the following text from {source_language.upper()} to {target_language.upper()}:\n"
+                    f"{preprocessed_text}\n\n"
+                    "Do not interpret or answer questions. Only translate the text."
+                )
+            },
+        ]
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            temperature=0.7,
+        )
+
+        # Extract the translation
+        translation = response['choices'][0]['message']['content'].strip()
+
+        # Apply post-processing rules based on translation type
+        if translation_type == "description":
+            translation = apply_description_rules(translation)
+        elif translation_type == "content":
+            translation = apply_content_rules(translation)
+
+        return jsonify({'translation': translation})
+    except openai.error.RateLimitError:
+        return jsonify({'translation': 'Rate limit exceeded. Please try again later.'})
+    except openai.error.AuthenticationError:
+        return jsonify({'translation': 'Invalid API key.'})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'translation': f'Unexpected error: {str(e)}'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
