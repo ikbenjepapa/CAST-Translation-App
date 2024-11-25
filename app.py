@@ -83,6 +83,9 @@ def translate_text():
     # Validate form data
     if not text_to_translate or not source_language or not target_language:
         return jsonify({'translation': 'Please provide valid input.'})
+        
+    if source_language == target_language:
+        return jsonify({'translation': 'Source and target languages must be different.'})
 
     if source_language not in ['auto', 'en', 'th'] or target_language not in ['en', 'th']:
         return jsonify({'translation': 'Invalid source or target language.'})
