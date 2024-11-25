@@ -22,13 +22,11 @@ if not OPEN_AI_KEY:
 openai.api_key = OPEN_AI_KEY
 
 # Global tone directive
+
 GLOBAL_PROMPT = (
-    "Translation should have a professional tone (business)."
-    "Avoid using generic pronouns like 'it' "
-    "when referring to objects, use descriptive terms such as 'the product,' 'the item,' or other contextually appropriate terms."
-    "Avoid overusing 'is' and use more descriptive action verbs such as 'features,' 'comes with,' "
-    "'includes,' or other suitable verbs based on the context."
-    "Do not use colons (:) to introduce components or lists."
+    "Use a professional tone for translations. "
+    "Avoid generic pronouns like 'it' and use descriptive terms (e.g., 'the product'). "
+    "Use active verbs like 'features' or 'includes,' and avoid colons."
 )
 
 def fetch_glossary_by_category(mc):
@@ -85,7 +83,10 @@ def translate_text():
     # Validate form data
     if not text_to_translate or not source_language or not target_language:
         return jsonify({'translation': 'Please provide valid input.'})
-
+    
+    if len(text_to_translate.strip()) < 3:  # Example: Minimum input length is 3 characters
+        return jsonify({'translation': "Input text is too short to detect a language."})
+    
     # Detect the actual language of the input text
     try:
         detected_language = detect(text_to_translate)
