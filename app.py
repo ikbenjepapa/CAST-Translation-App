@@ -26,7 +26,7 @@ openai.api_key = OPEN_AI_KEY
 GLOBAL_PROMPT = (
     "Use a professional tone for translations. "
     "Avoid generic pronouns like 'it' and use descriptive terms (e.g., 'the product'). "
-    "Use active verbs like 'features' or 'includes,' and avoid colons (:)."
+    "Use active verbs like 'features' or 'includes,' and do not use colons (:) to introduce list of items."
 )
 
 def fetch_glossary_by_category(mc):
