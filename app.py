@@ -7,6 +7,8 @@ from rules import apply_description_rules, apply_content_rules
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 from flask import send_from_directory
+from langdetect import detect, DetectorFactory
+DetectorFactory.seed = 0
 
 # Load environment variables
 load_dotenv()
@@ -84,8 +86,24 @@ def translate_text():
     if not text_to_translate or not source_language or not target_language:
         return jsonify({'translation': 'Please provide valid input.'})
 
-    if source_language not in ['auto', 'en', 'th'] or target_language not in ['en', 'th']:
-        return jsonify({'translation': 'Invalid source or target language.'})
+    # Detect the actual language of the input text
+    try:
+        detected_language = detect(text_to_translate)
+        language_map = {"en": "English", "th": "Thai"}  # Map langdetect codes to your dropdown options
+    except Exception as e:
+        return jsonify({'translation': f"Language detection error: {str(e)}"})
+
+    # Check if the detected language matches the selected source language
+    if detected_language != source_language:
+        detected_lang_name = language_map.get(detected_language, detected_language)
+        selected_lang_name = language_map.get(source_language, source_language)
+        return jsonify({
+            'translation': f"Detected language ({detected_lang_name}) does not match the selected source language ({selected_lang_name})."
+        })
+
+    # Check for identical source and target languages
+    if source_language == target_language:
+        return jsonify({'translation': 'Source and target languages must be different.'})
 
     if not mc:
         return jsonify({'translation': 'Please select a category.'})
@@ -144,10 +162,10 @@ def translate_text():
         print(f"Error: {e}")
         return jsonify({'translation': f'Unexpected error: {str(e)}'})
 
-if __name__ == '__main__':
-    # Get the port from the environment variable or default to 5000 for local testing
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
 #if __name__ == '__main__':
-#    app.run(debug=True)
+    # Get the port from the environment variable or default to 5000 for local testing
+#    port = int(os.environ.get("PORT", 5000))
+#    app.run(host="0.0.0.0", port=port)
+
+if __name__ == '__main__':
+    app.run(debug=True)
