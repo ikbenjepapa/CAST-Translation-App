@@ -1,4 +1,5 @@
 import random
+import re
 
 def fix_units_in_translation(text):
     
@@ -56,7 +57,8 @@ def fix_units_in_translation(text):
     }
 
     for old_unit, new_unit in unit_replacements.items():
-        text = text.replace(old_unit, new_unit)
+        # \b ensures the match is for full words only
+        text = re.sub(rf"\b{re.escape(old_unit)}\b", new_unit, text, flags=re.IGNORECASE)
     
     return text
 
@@ -83,6 +85,7 @@ def fix_units_in_translation2(text):
         "dm²": "sq.dm",
         "hm²": "sq.hm",
     }
+    
     for old_unit, new_unit in unit_replacements.items():
         text = text.replace(old_unit, new_unit)
     
