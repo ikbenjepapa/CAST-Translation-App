@@ -25,7 +25,7 @@ openai.api_key = OPEN_AI_KEY
 
 GLOBAL_PROMPT = (
     "Use a professional tone for translations. "
-    "Avoid generic pronouns like 'it' and use descriptive terms (e.g., 'the product'). "
+    "Avoid generic pronouns like 'it' and use descriptive terms (e.g., 'the product', 'the item', and appropriate terms). "
     "Use active verbs like 'features' or 'includes,' and do not use colons (:) to introduce list of items."
 )
 
@@ -140,7 +140,7 @@ def translate_text():
         ]
 
         response = openai.ChatCompletion.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=messages,
             temperature=0.7,
         )
