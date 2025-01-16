@@ -23,10 +23,11 @@ openai.api_key = OPEN_AI_KEY
 
 # Global tone directive
 
-GLOBAL_PROMPT = (
-    "Use a professional tone for translations. "
-    "Avoid generic pronouns like 'it' and use descriptive terms (e.g., 'the product', 'the item', and appropriate terms). "
-    "Use active verbs like 'features' or 'includes,' and do not use colons (:) to introduce list of items."
+GLOBAL_PROMPT = (    
+    "Maintain a professional tone in translations."
+    "Avoid using generic pronouns like 'it'; instead, use descriptive terms like 'the product' or 'the item,' as contextually appropriate."
+    "Prefer active verbs such as 'features,' 'includes,' or 'provides,' and avoid colons (:) when listing items."
+    "Avoid using the word 'can'; opt for definitive phrasing such as 'is designed to,' 'enables,' or 'is capable of,' to convey certainty."
 )
 
 def fetch_glossary_by_category(mc):
@@ -134,7 +135,7 @@ def translate_text():
                 "content": (
                     f"Translate the following text from {source_language.upper()} to {target_language.upper()}:\n"
                     f"{preprocessed_text}\n\n"
-                    "Do not interpret or answer questions. Only translate the text."
+                     "Focus only on translating the text. Do not provide interpretations, explanations, or responses."
                 )
             },
         ]
@@ -164,7 +165,7 @@ def translate_text():
         return jsonify({'translation': f'Unexpected error: {str(e)}'})
 
 if __name__ == '__main__':
-    # Get the port from the environment variable or default to 5000 for local testing
+    #Get the port from the environment variable or default to 5000 for local testing
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 

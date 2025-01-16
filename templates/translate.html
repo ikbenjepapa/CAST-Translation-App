@@ -6,6 +6,8 @@
     <meta name="description" content="CAST - Start Translating. A fast, intuitive translation tool.">
     <meta name="keywords" content="CAST, translation, accurate, contextual, swift, language">
     <title>CAST - Start Translating</title>
+    <!-- Include Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <style>
         /* General Reset */
         * {
@@ -143,6 +145,10 @@
             border-color: #4CAF50;
         }
 
+        .select2-container {
+            width: 100% !important; /* Ensure Select2 matches the input size */
+        }
+
         fieldset {
             margin-bottom: 20px;
             border: none;
@@ -232,6 +238,10 @@
             background-color: #388E3C;
         }
     </style>
+    <!-- Include Select2 JS and CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 <body>
     <div class="decorative">
@@ -264,10 +274,32 @@
                 <label for="mc">Category:</label>
                 <select id="mc" name="mc" required>
                     <option value="">Select Category</option>
-                    <option value="GD">GD</option>
-                    <option value="PB">PB</option>
-                    <option value="ET">ET</option>
+                    <option value="AU">AU</option>
+                    <option value="BC">BC</option>
                     <option value="BD">BD</option>
+                    <option value="BM">BM</option>
+                    <option value="BR">BR</option>
+                    <option value="DH">DH</option>
+                    <option value="DW">DW</option>
+                    <option value="ET">ET</option>
+                    <option value="FC">FC</option>
+                    <option value="FD">FD</option>
+                    <option value="FT">FT</option>
+                    <option value="GD">GD</option>
+                    <option value="HO">HO</option>
+                    <option value="HT">HT</option>
+                    <option value="HW">HW</option>
+                    <option value="IT">IT</option>
+                    <option value="KC">KC</option>
+                    <option value="LT">LT</option>
+                    <option value="MA">MA</option>
+                    <option value="OL">OL</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PE">PE</option>
+                    <option value="PT">PT</option>
+                    <option value="SA">SA</option>
+                    <option value="VS">VS</option>
                 </select>
 
                 <fieldset>
@@ -292,6 +324,14 @@
     </div>
 
     <script>
+        // Initialize Select2 for the category dropdown
+        $(document).ready(function() {
+            $('#mc').select2({
+                placeholder: "Select Category",
+                allowClear: true
+            });
+        });
+
         const form = document.getElementById('translate-form');
         const outputDiv = document.getElementById('output');
         const translatedText = document.getElementById('translated-text');
